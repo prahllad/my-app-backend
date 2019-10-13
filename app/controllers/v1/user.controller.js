@@ -26,8 +26,8 @@ module.exports = {
     },
     signup: async (req, res) => {
         try {
-            const userService = new UserService();
-            const user = await userService.signup(req.body);
+            // const userService = new UserService();
+            let user = await userHelper.signup(req.body);
             return response.success(res, constants.success.CREATED, {token: jwtHelper.createToken(user) });
         } catch (err) {
             console.log('errrr: ', err);

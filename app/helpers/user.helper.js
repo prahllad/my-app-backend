@@ -44,6 +44,18 @@ const userHelper = {
             return user;
         }
     },
+    async signup(user) {
+        try {
+            if (!emailHelper.validateEmail(user.email))
+                throw constant.errors.E_INVALID_EMAIL;
+            let newUser = new User(user);
+            let res = await newUser.save();
+            return res;
+        } catch (err) {
+            throw err;
+        }
+       
+    },
     async updateSocialAccount(type, id) {
         let data = {};
         if (type === 'facebook') {

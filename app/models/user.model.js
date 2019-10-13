@@ -20,7 +20,9 @@ const userSchema = mongoose.Schema({
         type:String,
         trim: true,
         index: {
-            unique: true
+            unique: true,
+            sparse:true,
+            partialFilterExpression: {phone: {$exists:true }}
         }
       },
       password: {
