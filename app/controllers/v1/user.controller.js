@@ -28,7 +28,7 @@ module.exports = {
         try {
             const userService = new UserService();
             const user = await userService.signup(req.body);
-            return response.success(res, constants.success.CREATED, { user: user, token: jwtHelper.createToken(user) });
+            return response.success(res, constants.success.CREATED, {token: jwtHelper.createToken(user) });
         } catch (err) {
             console.log('errrr: ', err);
             return response.error(res, err);
