@@ -7,6 +7,7 @@ const jwtHelper = require('./../../helpers/jwt.helper');
 const userHelper = require('./../../helpers/user.helper');
 const authHelper = require('./../../services/authHelper');
 const smsService = require('./../../services/twilosms');
+const sessionService = require('./../../services/session');
 module.exports = {
     index: async (req, res) => {
         try {
@@ -39,6 +40,7 @@ module.exports = {
             try {
                 if (err)
                     throw err;
+                
                 return response.success(res, constants.success.OK, { token: jwtHelper.createToken(user) });
             } catch (err) {
                 return response.error(res, err);
@@ -127,6 +129,8 @@ module.exports = {
                 let sms = await smsService.verifyCode(req.body);
                 if (sms.status == "approved" && sms.valid == true) {
                     user = await userHelper.getUserByPhone(req.body);
+                    await (new sessionService().createSession(user.email, req.body.userAgent));
+
                     return response.success(res, constants.success.OK, {user: user, token: jwtHelper.createToken(user) });
 
                 }
@@ -134,7 +138,7 @@ module.exports = {
             }
 
         } catch (err) {
-            return response.err(res.err);
+            return response.error(res,err);
 
 
         }
