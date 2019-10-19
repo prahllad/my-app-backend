@@ -45,22 +45,7 @@ module.exports = {
             }
         })(req, res);
     },
-    resetPassword: async (req, res) => {
-        try {
-            const user = await userHelper.resetPassword(req.body);
-            passport.authenticate('local', { session: false }, (err, user) => {
-                try {
-                    if (err)
-                        throw err;
-                    return response.success(res, constants.success.OK, { token: jwtHelper.createToken(user) });
-                } catch (err) {
-                    return response.error(res, err);
-                }
-            })(req, res);
-        } catch (err) {
-            return response.error(res, err);
-        }
-    },
+    
     authLink: async(req, res) => {
         try {
             const loginLink = await authHelper.getloginLink(req.params.type,req.user);
@@ -158,19 +143,21 @@ module.exports = {
     resetPassword: async(req, res) => {
         try {
             const user = await userHelper.resetPassword(req.body);
-            passport.authenticate('local', { session: false }, (err, user) => {
-                try {
-                    if(err)
-                        throw err;
-                    return response.success(res, constants.success.OK, {token: jwtHelper.createToken(user)});
-                }catch(err) {
-                    return response.error(res, err);
-                }
-            })(req, res);
+            return response.success(res,constants.success.OK,'');
+            // passport.authenticate('local', { session: false }, (err, user) => {
+            //     try {
+            //         if(err)
+            //             throw err;
+            //         return response.success(res, constants.success.OK, {token: jwtHelper.createToken(user)});
+            //     }catch(err) {
+            //         return response.error(res, err);
+            //     }
+            // })(req, res);
         } catch(err) {
             return response.error(res, err);
         }
     },
+   
     updateProfile:async(req,res)=>{
         try{
             const user = await userHelper.updateInfo(req.user.id,req.body.email);
