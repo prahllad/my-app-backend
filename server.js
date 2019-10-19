@@ -10,3 +10,6 @@ https.createServer({
     console.log('Listening...')
   });
   console.log('Express backend server started in ' + app.get('env') + ' mode on port ' + port);
+
+  //used this command to generate server.key and server.cert for local certficate installation
+  //openssl req -nodes -new -x509 -keyout server.key -out server.cert
