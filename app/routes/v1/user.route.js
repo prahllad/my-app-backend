@@ -21,7 +21,9 @@ const PROTECTED = [
 
     
 ];
-const PUBLIC = [];
+const PUBLIC = [
+    { type: 'GET', path: '', handlers: [(req,res)=>{res.send('hello')}] },
+];
 module.exports = {
     PROTECTED,
     PUBLIC
