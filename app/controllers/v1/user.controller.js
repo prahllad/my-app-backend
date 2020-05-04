@@ -8,6 +8,8 @@ const userHelper = require('./../../helpers/user.helper');
 const authHelper = require('./../../services/authHelper');
 const smsService = require('./../../services/twilosms');
 const sessionService = require('./../../services/session');
+const S3 = require('./../../services/aws-s3');
+const emailVerification = require('./../../services/emailOtp');
 module.exports = {
     index: async (req, res) => {
         try {
@@ -20,6 +22,7 @@ module.exports = {
     checkUserExist: async (req, res) => {
         try {
             const user = await userHelper.getUserByEmail(req.params.email);
+            await emailVerification.sendMail(req.params.email);
             return response.success(res, constants.success.OK, user);
         } catch (err) {
             return response.error(res, err);
@@ -36,6 +39,8 @@ module.exports = {
         }
     },
     signin: async (req, res) => {
+        let valid = await emailVerification.verifyToken(req.body);
+        if(!valid) return response.error(res, constants.errors.E_INVALID_OTP);
         passport.authenticate('local', { session: false }, (err, user) => {
             try {
                 if (err)
@@ -180,5 +185,16 @@ module.exports = {
         catch(err){
             return response.error(res,err);
         }
+    },
+    imageUpload:async(req,res,next)=>{
+        try{
+            // console.log(req.file);
+                let url = await S3.s3Upload(req.file);
+                return response.success(res,constants.success.OK,url.Location)
+        }
+        catch(err){
+
+        }
+
     }
 };

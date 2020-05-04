@@ -1,6 +1,21 @@
 'use strict';
 const isAuthenticated = require('./../../../configs/middlewares/is-authenticated');
 const userController = require('./../../controllers/v1/user.controller');
+const multer = require('multer');
+const crypto = require('crypto');
+const path = require('path'); 
+// const upload = multer({ dest: 'uploads/' });
+var storage = multer.diskStorage({
+    destination: './uploads/',
+    filename: function (req, file, cb) {
+      crypto.pseudoRandomBytes(16, function (err, raw) {
+        if (err) return cb(err)
+  
+        cb(null, raw.toString('hex') + path.extname(file.originalname))
+      })
+    }
+  })
+  var upload = multer({ storage: storage });
 const PROTECTED = [
     { type: 'GET', path: '/user', handlers: [isAuthenticated, userController.index] },
     { type: 'GET', path: '/user/:email', handlers: [userController.checkUserExist] },
@@ -15,7 +30,8 @@ const PROTECTED = [
     { type: 'POST', path: '/disconnect/auth',handlers:[isAuthenticated,userController.disconnectAuth]},
     { type: 'POST', path: '/social/profile',handlers:[isAuthenticated,userController.connectProfile]},
     { type: 'POST', path: '/update/info',handlers:[isAuthenticated,userController.updateProfile]},
-    { type: 'POST', path: '/remove/user',handlers:[isAuthenticated,userController.deleteUser]}
+    { type: 'POST', path: '/remove/user',handlers:[isAuthenticated,userController.deleteUser]},
+    { type: 'POST', path: '/upload',handlers:[isAuthenticated,upload.single('image'),userController.imageUpload]}
     
 
 

@@ -39,6 +39,12 @@ module.exports = Object.freeze({
         code: 420,
         name: 'E_INVALID_EMAIL',
         err_message: 'Invalid Email.'
-    }
+    },
+    E_INVALID_OTP: {
+        code: 420,
+        name: 'E_INVALID_OTP',
+        err_message: 'Invalid Otp.'
+    },
+
     
 });
