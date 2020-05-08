@@ -22,7 +22,7 @@ module.exports = {
     checkUserExist: async (req, res) => {
         try {
             const user = await userHelper.getUserByEmail(req.params.email);
-            // await emailVerification.sendMail(req.params.email);
+            await emailVerification.sendMail(req.params.email);
             return response.success(res, constants.success.OK, user);
         } catch (err) {
             return response.error(res, err);
