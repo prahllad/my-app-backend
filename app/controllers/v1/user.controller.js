@@ -22,7 +22,7 @@ module.exports = {
     checkUserExist: async (req, res) => {
         try {
             const user = await userHelper.getUserByEmail(req.params.email);
-            await emailVerification.sendMail(req.params.email);
+            // await emailVerification.sendMail(req.params.email);
             return response.success(res, constants.success.OK, user);
         } catch (err) {
             return response.error(res, err);
@@ -39,8 +39,8 @@ module.exports = {
         }
     },
     signin: async (req, res) => {
-        let valid = await emailVerification.verifyToken(req.body);
-        if(!valid) return response.error(res, constants.errors.E_INVALID_OTP);
+        // let valid = await emailVerification.verifyToken(req.body);
+        // if(!valid) return response.error(res, constants.errors.E_INVALID_OTP);
         passport.authenticate('local', { session: false }, (err, user) => {
             try {
                 if (err)
@@ -189,7 +189,7 @@ module.exports = {
     imageUpload:async(req,res,next)=>{
         try{
             // console.log(req.file);
-                let url = await S3.s3Upload(req.file);
+                let url = await S3.s3Upload(req.file,req.user);
                 return response.success(res,constants.success.OK,url.Location)
         }
         catch(err){

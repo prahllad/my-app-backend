@@ -31,7 +31,7 @@ const PROTECTED = [
     { type: 'POST', path: '/social/profile',handlers:[isAuthenticated,userController.connectProfile]},
     { type: 'POST', path: '/update/info',handlers:[isAuthenticated,userController.updateProfile]},
     { type: 'POST', path: '/remove/user',handlers:[isAuthenticated,userController.deleteUser]},
-    { type: 'POST', path: '/upload',handlers:[isAuthenticated,upload.single('image'),userController.imageUpload]}
+    { type: 'POST', path: '/upload',handlers:[upload.single('image'),isAuthenticated,userController.imageUpload]}
     
 
 

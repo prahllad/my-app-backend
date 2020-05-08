@@ -4,9 +4,10 @@ const dotenv = require('dotenv');
 const fs = require('fs');
 BUCKET_NAME = 'angular-image';
 dotenv.config();
+const userhelper = require('./../helpers/user.helper');
 class imageUpload{
     constructor(){}
-    async s3Upload(file){
+    async s3Upload(file,user){
 
         let s3bucket = new AWS.S3({
             accessKeyId: process.env.ACCESS_KEY_ID,
