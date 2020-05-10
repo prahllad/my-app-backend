@@ -1,7 +1,8 @@
 'use strict';
-const app = require('./app');
-const http = require('http');
+ require('./app');
+const Express = require('express');
+const app = Express();
 const port = process.env.PORT || 3002;
-const server = http.createServer(app);
-server.listen(port);
-console.log('Express v-kart backend server started in ' + app.get('env') + ' mode on port ' + port);
+app.listen(port,()=>{
+    console.log('server is listening in port:'+port);
+})
